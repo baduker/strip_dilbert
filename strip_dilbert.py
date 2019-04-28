@@ -2,6 +2,7 @@
 
 import os
 import time
+from tqdm import tqdm
 import requests
 from bs4 import BeautifulSoup as bs
 from datetime import date, timedelta
@@ -59,11 +60,15 @@ url_list = get_comic_strip_url(FIRST_COMIC, LAST_COMIC)
 os.mkdir(DEFAULT_DIR_NAME)
 
 for url in url_list:
-  session = requests.Session()
-  response = session.get(url)
-  download_url = get_image_comic_url(session, response)
-  print("Downloading {}".format(download_url))
-  download_dilbert(session, download_url)
+	session = requests.Session()
+	response = session.get(url)
+	download_url = get_image_comic_url(session, response)
+
+	pbar = tqdm(range(len(url_list)))
+	for i in pbar:
+		download_dilbert(session, download_url)
+		pbar.set_description("Fetching {}".format(url))
+		
 end = time.time()
 
 print("Files downloaded in {:.2f} seconds!".format(end - start))

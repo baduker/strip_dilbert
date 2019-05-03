@@ -31,22 +31,44 @@ BASE_URL = "https://dilbert.com/strip/"
 FIRST_COMIC = date(1989, 4, 16)  # start date
 
 def show_logo():
+	colorama.init(autoreset=True)
 	print("\nA simple comic scraper for dilbert.com")
 	print(Fore.RED + LOGO)
-	print("author: baduker | source: github.com/baduker/strip_dilbert\n")
+	print("author: baduker | repo: github.com/baduker/strip_dilbert\n")
 
 def show_main_menu():
-	print("GET:\n")
-	print("1. Today's comic strip - {}".format(get_today()))
-	print("2. This week's strips - (# of comics)")
-	print("3. Last week's strips - Week num: XX | Date: MM/DD/YYYY - MM/DD/YYYY")
-	print("4. This month's strips - XX of comics as of NOW")
-	print("5. Last month's strips (NAME OF THE LAST MONTH + # of Comics)")
+	print("Choose a menu item to download:\n")
+	print("1. Today's comic strip: {}".format(get_today()))
+	print("2. This week's strips: {}".format(get_this_week()))
+	print("3. Last week's strips: {}".format(get_last_week()))
+	print("4. This month's strips: XX of comics as of NOW")
+	print("5. Last month's strips: (NAME OF THE LAST MONTH + # of Comics)")
 	print("6. CUSTOME DATE RANGE\n")
 
 def get_today():
 	today = date.today()
-	return today.strftime('%b %d %Y')
+	return today.strftime('%d/%b/%Y')
+
+def get_this_week():
+	today = date.today()
+	week_start = today - timedelta(days = today.weekday())
+	delta = (today - week_start).days
+	week_end = week_start + timedelta(days= delta)
+	this_week = week_start.strftime('%d/%b/%Y') + " - " + week_end.strftime('%d/%b/%Y')
+	return this_week
+
+def get_last_week():
+	today = date.today()
+	last_week_start = today - timedelta(days = today.weekday(), weeks = 1)
+	last_week_end = last_week_start + timedelta(days=6)
+	last_week = last_week_start.strftime('%d/%b/%Y') + " - " + last_week_end.strftime('%d/%b/%Y')
+	return last_week
+
+#def count_number_of_strips():
+#	today = date.today()
+#	week_start = today - timedelta(days = today.weekday())
+#	delta = (today - week_start).days
+#	return delta
 
 def get_comic_strip_start_date():
 	print("Type a dilbert comic start date in YYYY/MM/DD format:")
@@ -100,7 +122,6 @@ def download_dilbert(s, u):
     file.write(response.content)
 
 def main():
-	colorama.init(autoreset=True)
 	show_logo()
 	show_main_menu()
 

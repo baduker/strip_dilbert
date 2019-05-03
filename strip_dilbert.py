@@ -41,9 +41,9 @@ def show_main_menu():
 	print("1. Today's comic strip: {}".format(get_today()))
 	print("2. This week's strips: {}".format(get_this_week()))
 	print("3. Last week's strips: {}".format(get_last_week()))
-	print("4. This month's strips: XX of comics as of NOW")
-	print("5. Last month's strips: (NAME OF THE LAST MONTH + # of Comics)")
-	print("6. CUSTOME DATE RANGE\n")
+	print("4. This month's strips: {}".format(get_this_month()))
+	print("5. Last month's strips: {}".format(get_last_month()))
+	print("6. CUSTOM DATE RANGE\n")
 
 def get_today():
 	today = date.today()
@@ -63,6 +63,20 @@ def get_last_week():
 	last_week_end = last_week_start + timedelta(days=6)
 	last_week = last_week_start.strftime('%d/%b/%Y') + " - " + last_week_end.strftime('%d/%b/%Y')
 	return last_week
+
+def get_this_month():
+	today = date.today()
+	if today.day > 25:
+		today += timedelta(7)
+	frist_day_of_this_month = today.replace(day=1)
+	this_month = frist_day_of_this_month.strftime('%d/%b/%Y') + " - " + today.strftime('%d/%b/%Y')
+	return this_month
+
+def get_last_month():
+	today = date.today()
+	first_day = today.replace(day=1)
+	last_month = first_day - timedelta(days=1)
+	return last_month.strftime('%b')			
 
 #def count_number_of_strips():
 #	today = date.today()

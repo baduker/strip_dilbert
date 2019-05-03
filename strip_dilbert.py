@@ -3,9 +3,25 @@
 import os
 import time
 from tqdm import tqdm
+
+import colorama
+from colorama import Fore
+
 import requests
 from bs4 import BeautifulSoup as bs
 from datetime import date, timedelta
+
+LOGO = """
+     _        _             _ _ _ _               _   
+    | |      (_)           | (_) | |             | |  
+ ___| |_ _ __ _ _ __     __| |_| | |__   ___ _ __| |_ 
+/ __| __| '__| | '_ \   / _` | | | '_ \ / _ \ '__| __|
+\__ \ |_| |  | | |_) | | (_| | | | |_) |  __/ |  | |_ 
+|___/\__|_|  |_| .__/   \__,_|_|_|_.__/ \___|_|   \__|
+               | |                                    
+               |_|                version: beta | 2019
+
+"""
 
 DEFAULT_DIR_NAME = "dilbert"
 COMICS_DIRECTORY = os.path.join(os.getcwd(), DEFAULT_DIR_NAME)
@@ -13,6 +29,24 @@ COMICS_DIRECTORY = os.path.join(os.getcwd(), DEFAULT_DIR_NAME)
 BASE_URL = "https://dilbert.com/strip/"
 
 FIRST_COMIC = date(1989, 4, 16)  # start date
+
+def show_logo():
+	print("\nA simple comic scraper for dilbert.com")
+	print(Fore.RED + LOGO)
+	print("author: baduker | source: github.com/baduker/strip_dilbert\n")
+
+def show_main_menu():
+	print("GET:\n")
+	print("1. Today's comic strip - {}".format(get_today()))
+	print("2. This week's strips - (# of comics)")
+	print("3. Last week's strips - Week num: XX | Date: MM/DD/YYYY - MM/DD/YYYY")
+	print("4. This month's strips - XX of comics as of NOW")
+	print("5. Last month's strips (NAME OF THE LAST MONTH + # of Comics)")
+	print("6. CUSTOME DATE RANGE\n")
+
+def get_today():
+	today = date.today()
+	return today.strftime('%b %d %Y')
 
 def get_comic_strip_start_date():
 	print("Type a dilbert comic start date in YYYY/MM/DD format:")
@@ -65,7 +99,13 @@ def download_dilbert(s, u):
     response = s.get(u)
     file.write(response.content)
 
-first_strip_date = get_comic_strip_start_date()
+def main():
+	colorama.init(autoreset=True)
+	show_logo()
+	show_main_menu()
+
+
+"""first_strip_date = get_comic_strip_start_date()
 last_strip_date = get_comic_strip_end_date()
 
 start = time.time()
@@ -88,4 +128,7 @@ for url in url_list:
 
 end = time.time()
 
-print("Files downloaded in {:.2f} seconds!".format(end - start))
+print("Files downloaded in {:.2f} seconds!".format(end - start))"""
+
+if __name__ == '__main__':
+	main()

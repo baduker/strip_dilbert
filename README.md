@@ -1,5 +1,6 @@
 # strip_dilbert
 A simple comic strip scraper for dilbert.com
+~~~
      _        _             _ _ _ _               _   
     | |      (_)           | (_) | |             | |  
  ___| |_ _ __ _ _ __     __| |_| | |__   ___ _ __| |_ 
@@ -8,3 +9,4 @@ A simple comic strip scraper for dilbert.com
 |___/\__|_|  |_| .__/   \__,_|_|_|_.__/ \___|_|   \__|
                | |                                    
                |_|             version: beta | 05/2019
+~~~

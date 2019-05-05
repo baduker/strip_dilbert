@@ -23,12 +23,14 @@ The script will have a number of options, letting the user get the comics for th
 
 Here's what the main menu will have:
 
-1. **Today's comic strip:** *Downloads the comic for today*
-2. **This week's strips:** *Downloads the comics for the current week - up till the current day*
-3. **Last week's strips:** *Downloads the comics for last week*
-4. **This month's strips:** *Downloads the comics for the current month - up till the current day*
-5. **Last month's strips:** *Downloads all the comics for the previous month*
-6. **Custom date range:** *Let's the user set the download date range (16/Apr/1989 - NOW)*
+:+1: working feature | :-1: feature to be implemented
+
+1. **Today's comic strip:** *Downloads the comic for today* :-1:
+2. **This week's strips:** *Downloads the comics for the current week - up till the current day* :-1:
+3. **Last week's strips:** *Downloads the comics for last week* :-1:
+4. **This month's strips:** *Downloads the comics for the current month - up till the current day* :-1:
+5. **Last month's strips:** *Downloads all the comics for the previous month* :-1:
+6. **Custom date range:** *Let's the user set the download date range (16/Apr/1989 - NOW)* :+1:
 
 So, hopefully there are going to be some opportutnies for you with this script. ;)
 

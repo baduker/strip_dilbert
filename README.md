@@ -34,7 +34,7 @@ So, hopefully there are going to be some opportutnies for you with this script. 
 
 [![opportunity.png](https://assets.amuniversal.com/505f94006cbc01301d46001dd8b71c47)](https://dilbert.com/strip/2009-09-24)
 
-##WORK PROGRESS:##
+## WORK PROGRESS:
 
 - [x] Implement custom date range menu item (it's working but kinda slow)
 - [ ] Implement all the main menu items

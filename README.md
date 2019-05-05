@@ -21,7 +21,7 @@ Well, the idea is to download the dilbert comic strip(s) for any day they've bee
 
 The script will have a number of options, letting the user get the comics for the current week or month, for example.
 
-Here's what the main menu will have:
+## Here's what the main menu will have:
 
 :+1: working feature | :-1: feature to be implemented
 
@@ -37,6 +37,8 @@ So, hopefully there are going to be some opportutnies for you with this script. 
 [![opportunity.png](https://assets.amuniversal.com/505f94006cbc01301d46001dd8b71c47)](https://dilbert.com/strip/2009-09-24)
 
 ## WORK PROGRESS:
+
+DONE! - [x] | TO-DO: - [ ]
 
 - [x] Implement custom date range menu item (it's working but kinda slow)
 - [ ] Implement all the main menu items

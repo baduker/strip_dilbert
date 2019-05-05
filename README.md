@@ -11,7 +11,7 @@ A simple comic strip scraper for dilbert.com
                |_|             version: beta | 05/2019
 ~~~
 
-**This is work in progress!**
+**This is work in progress!** *See bottom of the page for details*
 
 *strip_dilbert* is a simple image scrper written in Python for the well-known [dilbert.com](https://dilbert.com) comic website.
 
@@ -33,3 +33,11 @@ Here's what the main menu will have:
 So, hopefully there are going to be some opportutnies for you with this script. ;)
 
 [![opportunity.png](https://assets.amuniversal.com/505f94006cbc01301d46001dd8b71c47)](https://dilbert.com/strip/2009-09-24)
+
+##WORK PROGRESS:##
+
+- [x] Implement custom date range menu item (it's working but kinda slow)
+- [ ] Implement all the main menu items
+- [ ] Improve the performance of the `download_engine()` method
+- [ ] Comment all the code
+- [ ] Reorder ale the methods and implement `if __name__ == '__main__':`

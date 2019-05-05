@@ -1,6 +1,8 @@
 #!/usr/bin/python3.6
 
 import os
+import subprocess
+
 import time
 import sys
 from tqdm import tqdm
@@ -24,14 +26,26 @@ LOGO = """
 
 """
 
-DEFAULT_DIR_NAME = "dilbert"
+DEFAULT_DIR_NAME = "my_dilberts"
 COMICS_DIRECTORY = os.path.join(os.getcwd(), DEFAULT_DIR_NAME)
 
 BASE_URL = "https://dilbert.com/strip/"
 
-FIRST_COMIC = date(1989, 4, 16)  # start date
+FIRST_COMIC = date(1989, 4, 16)  # The earliest diblert comic strip published
+NEWEST_COMIC = date.today()
+
+
+def clear_screen():
+	if os.name in ('nt', 'dos'):
+		subprocess.call('cls')
+	elif os.name in ('linux', 'osx', 'posix'):
+		subprocess.call('clear')
+	else:
+		print("\n" * 120)
+
 
 def show_logo():
+	clear_screen()
 	colorama.init(autoreset=True)
 	print("\nA simple comic strip scraper for dilbert.com")
 	print(Fore.RED + LOGO)
@@ -45,59 +59,74 @@ def show_main_menu():
 	print("3. Last week's strips: {}".format(get_last_week()))
 	print("4. This month's strips: {}".format(get_this_month()))
 	print("5. Last month's strips: {}".format(get_last_month()))
-	print("6. CUSTOM DATE RANGE")
+	print("6. Custom date ragne:")
 	print("-"*20)
 	print("0. Type 0 to Exit.\n")
 
 
-def get_menu_item():
+def get_main_menu_item():
 	while True:
 		try:
-			menu_item = int(input("Type your selection here: "))
+			main_menu_item = int(input("Type your selection here: "))
 		except ValueError:
 			print("\nError: expected a number! Try again.\n")
 			continue
-		if menu_item < 0:
+		if main_menu_item < 0:
 			print("\nSorry, that didn't work! Try again.\n")
 			continue
-		elif menu_item > 6:
+		elif main_menu_item > 6:
 			print("\nNo such menu item! Try again.\n")
 			continue
-		elif menu_item == 0:
+		elif main_menu_item == 0:
 			sys.exit()
 		else:
 			break
-	return menu_item
+	return main_menu_item
 
 
 def handle_main_menu(menu_item):
+	clear_screen()
 	if menu_item == 6:
+		today = date.today()
+		print("\nNOTE! Since {}, there has been {} (as of {}) dilberts published.".format(FIRST_COMIC.strftime('%d/%b/%Y'), get_number_of_dilberts_till_now(), today.strftime('%d/%b/%Y')))
+		print("So, if you want to download all of them bear in mind that it might take a while.\n")
+		print("1. Downlaod all dilberts ({})!".format(get_number_of_dilberts_till_now()))
+		print("2. Enter a custom date range.")
+		print("-"*20)
+		print("0. Type 0 to Exit.\n")
+
+		minor_item = get_minor_menu_item()
+		handle_minor_menu(minor_item)
+	
+
+
+def get_minor_menu_item():
+	while True:
+		try:
+			minor_menu_item = int(input("Type your selection here: "))
+		except ValueError:
+			print("\nError: expected a number! Try again.\n")
+			continue
+		if minor_menu_item < 0:
+			print("\nSorry, that didn't work! Try again.\n")
+			continue
+		elif minor_menu_item > 2:
+			print("\nNo such menu item! Try again.\n")
+			continue
+		elif minor_menu_item == 0:
+			sys.exit()
+		else:
+			break
+	return minor_menu_item
+
+def handle_minor_menu(menu_item):
+	if menu_item == 1:
+		download_engine(FIRST_COMIC, NEWEST_COMIC)
+	elif menu_item == 2:
 		first_strip_date = get_comic_strip_start_date()
 		last_strip_date = get_comic_strip_end_date()
+		download_engine(first_strip_date, last_strip_date)
 
-		start = time.time()
-
-		url_list = get_comic_strip_url(first_strip_date, last_strip_date)
-
-		os.mkdir(DEFAULT_DIR_NAME)
-
-		for url in url_list:
-			session = requests.Session()
-			response = session.get(url)
-			download_url = get_image_comic_url(session, response)
-
-			pbar = tqdm(range(len(url_list)))
-
-			for i in pbar:
-				pbar.set_description("Fetching {}".format(url[8:]))
-				download_dilbert(session, download_url)
-				
-
-		end = time.time()
-
-		print("Files downloaded in {:.2f} seconds!".format(end - start))
-	else:
-		print("The program has ended!")
 
 def get_today():
 	today = date.today()
@@ -142,6 +171,13 @@ def count_number_of_strips():
 	week_start = today - timedelta(days = today.weekday())
 	delta = (today - week_start).days
 	return delta
+
+
+def get_number_of_dilberts_till_now():
+	today = date.today()
+	delta = (today - FIRST_COMIC).days
+	return delta
+
 
 
 def get_comic_strip_start_date():
@@ -199,7 +235,30 @@ def download_dilbert(s, u):
     file.write(response.content)
 
 
+def download_engine(fcsd, lcsd): #fcsd = first comic strip date & lcsd = last comis strip date
+
+	start = time.time()
+
+	url_list = get_comic_strip_url(fcsd, lcsd)
+
+	os.mkdir(DEFAULT_DIR_NAME)
+
+	for url in url_list:
+		session = requests.Session()
+		response = session.get(url)
+		download_url = get_image_comic_url(session, response)
+
+		pbar = tqdm(range(len(url_list)))
+
+		for i in pbar:
+			pbar.set_description("Fetching {}".format(url[8:]))
+			download_dilbert(session, download_url)
+			
+	end = time.time()
+
+	print("Files downloaded in {:.2f} seconds!".format(end - start))
+
 show_logo()
 show_main_menu()
-mi = get_menu_item()
-handle_main_menu(mi)
+mmi = get_main_menu_item()
+handle_main_menu(mmi)

@@ -32,7 +32,7 @@ FIRST_COMIC = date(1989, 4, 16)  # start date
 
 def show_logo():
 	colorama.init(autoreset=True)
-	print("\nA simple comic scraper for dilbert.com")
+	print("\nA simple comic strip scraper for dilbert.com")
 	print(Fore.RED + LOGO)
 	print("author: baduker | repo: github.com/baduker/strip_dilbert\n")
 

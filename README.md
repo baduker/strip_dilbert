@@ -38,7 +38,8 @@ So, hopefully there are going to be some opportutnies for you with this script. 
 
 ## WORK PROGRESS:
 
-DONE! - [x] | TO-DO: - [ ]
+- [x] DONE! :collision:
+- [ ] TO-DO :shit:
 
 - [x] Implement custom date range menu item (it's working but kinda slow)
 - [ ] Implement all the main menu items

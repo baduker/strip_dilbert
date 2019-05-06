@@ -85,8 +85,8 @@ def get_main_menu_item():
 
 
 def handle_main_menu(menu_item):
-	clear_screen()
 	if menu_item == 6:
+		clear_screen()
 		today = date.today()
 		print("\nNOTE! Since {}, there has been {} (as of {}) dilberts published.".format(FIRST_COMIC.strftime('%d/%b/%Y'), get_number_of_dilberts_till_now(), today.strftime('%d/%b/%Y')))
 		print("So, if you want to download all of them bear in mind that it might take a while.\n")
@@ -98,7 +98,6 @@ def handle_main_menu(menu_item):
 		minor_item = get_minor_menu_item()
 		handle_minor_menu(minor_item)
 	
-
 
 def get_minor_menu_item():
 	while True:
@@ -169,7 +168,7 @@ def get_last_month():
 def count_number_of_strips():
 	today = date.today()
 	week_start = today - timedelta(days = today.weekday())
-	delta = (today - week_start).days
+	delta = (today - week_start).days + 1
 	return delta
 
 
@@ -225,7 +224,7 @@ def get_image_comic_url(session, response):
   for div in soup.find_all('div', class_="img-comic-container"):
     for a in div.find_all('a', class_="img-comic-link"):
       for img in a.find_all('img', src=True):
-        return "http:" + img['src']
+        return "https:" + img['src']
 
 
 def download_dilbert(s, u):

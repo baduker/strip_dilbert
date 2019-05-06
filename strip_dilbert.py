@@ -22,7 +22,7 @@ LOGO = """
 \__ \ |_| |  | | |_) | | (_| | | | |_) |  __/ |  | |_ 
 |___/\__|_|  |_| .__/   \__,_|_|_|_.__/ \___|_|   \__|
                | |                                    
-               |_|                version: beta | 2019
+               |_|                version: alpha | 2019
 
 """
 
@@ -55,10 +55,10 @@ def show_logo():
 def show_main_menu():
 	print("Choose a menu item to download:\n")
 	print("1. Today's comic strip: {}".format(get_today()))
-	print("2. This week's strips: {} | {} comic(s) available.".format(get_this_week(), count_number_of_strips()))
-	print("3. Last week's strips: {}".format(get_last_week()))
-	print("4. This month's strips: {}".format(get_this_month()))
-	print("5. Last month's strips: {}".format(get_last_month()))
+	print("2. This week's strips:  {} - {} | {} comic(s) available.".format(get_this_week()[0], get_this_week()[1], count_number_of_strips()))
+	print("3. Last week's strips:  {} - {}".format(get_last_week()[0], get_last_week()[1]))
+	print("4. This month's strips: {} - {}".format(get_this_month()[0], get_this_month()[1]))
+	print("5. Last month's strips: {} - {}".format(get_last_month()[0], get_last_month()[1]))
 	print("6. Custom date ragne:")
 	print("-"*20)
 	print("0. Type 0 to Exit.\n")
@@ -85,7 +85,17 @@ def get_main_menu_item():
 
 
 def handle_main_menu(menu_item):
-	if menu_item == 6:
+	if menu_item == 1:
+		download_engine(get_today(), get_today())
+	elif menu_item == 2:
+		download_engine(get_this_week()[0], get_this_week()[1])
+	elif menu_item == 3:
+		download_engine(get_last_week()[0], get_last_week()[1])
+	elif menu_item == 4:
+		download_engine(get_this_month()[0], get_this_month()[1])
+	elif menu_item == 5:
+		print("Feature not yet available.")
+	elif menu_item == 6:
 		clear_screen()
 		today = date.today()
 		print("\nNOTE! Since {}, there has been {} (as of {}) dilberts published.".format(FIRST_COMIC.strftime('%d/%b/%Y'), get_number_of_dilberts_till_now(), today.strftime('%d/%b/%Y')))
@@ -129,7 +139,7 @@ def handle_minor_menu(menu_item):
 
 def get_today():
 	today = date.today()
-	return today.strftime('%d/%b/%Y')
+	return today
 
 
 def get_this_week():
@@ -137,32 +147,29 @@ def get_this_week():
 	week_start = today - timedelta(days = today.weekday())
 	delta = (today - week_start).days
 	week_end = week_start + timedelta(days= delta)
-	this_week = week_start.strftime('%d/%b/%Y') + " - " + week_end.strftime('%d/%b/%Y')
-	return this_week
+	return week_start, week_end
 
 
 def get_last_week():
 	today = date.today()
 	last_week_start = today - timedelta(days = today.weekday(), weeks = 1)
 	last_week_end = last_week_start + timedelta(days=6)
-	last_week = last_week_start.strftime('%d/%b/%Y') + " - " + last_week_end.strftime('%d/%b/%Y')
-	return last_week
+	return last_week_start, last_week_end
 
 
 def get_this_month():
 	today = date.today()
 	if today.day > 25:
 		today += timedelta(7)
-	frist_day_of_this_month = today.replace(day=1)
-	this_month = frist_day_of_this_month.strftime('%d/%b/%Y') + " - " + today.strftime('%d/%b/%Y')
-	return this_month
+	first_day_of_this_month = today.replace(day=1)
+	return first_day_of_this_month, today
 
 
 def get_last_month():
 	today = date.today()
 	first_day = today.replace(day=1)
 	last_month = first_day - timedelta(days=1)
-	return last_month.strftime('%b')			
+	return first_day, last_month			
 
 
 def count_number_of_strips():

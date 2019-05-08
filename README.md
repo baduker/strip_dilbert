@@ -8,7 +8,7 @@ A simple comic strip scraper for dilbert.com
 \__ \ |_| |  | | |_) | | (_| | | | |_) |  __/ |  | |_ 
 |___/\__|_|  |_| .__/   \__,_|_|_|_.__/ \___|_|   \__|
                | |                                    
-               |_|              version: 0.1 | 05/2019
+               |_|                 version: 0.1 | 2019
 ~~~
 
 **What is strip_dilbert.py?**
@@ -23,7 +23,7 @@ The script has a number of options, letting the user get the comics for the curr
 
 ## Here's what the main menu contains:
 
-:+1: all features implemented and working! |
+:+1: all features implemented and working!
 
 1. **Today's comic strip:** *Downloads the comic for today* 
 2. **This week's strips:** *Downloads the comics for the current week - up till the current day* 

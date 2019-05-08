@@ -12,6 +12,8 @@ from colorama import Fore
 
 import requests
 from bs4 import BeautifulSoup as bs
+
+from dateutil.relativedelta import relativedelta
 from datetime import date, timedelta
 
 LOGO = """
@@ -22,7 +24,7 @@ LOGO = """
 \__ \ |_| |  | | |_) | | (_| | | | |_) |  __/ |  | |_ 
 |___/\__|_|  |_| .__/   \__,_|_|_|_.__/ \___|_|   \__|
                | |                                    
-               |_|                version: alpha | 2019
+               |_|                 version: 0.1 | 2019
 
 """
 
@@ -94,7 +96,7 @@ def handle_main_menu(menu_item):
 	elif menu_item == 4:
 		download_engine(get_this_month()[0], get_this_month()[1])
 	elif menu_item == 5:
-		print("Feature not yet available.")
+		download_engine(get_last_month()[0], get_last_month()[1])
 	elif menu_item == 6:
 		clear_screen()
 		today = date.today()
@@ -167,9 +169,10 @@ def get_this_month():
 
 def get_last_month():
 	today = date.today()
-	first_day = today.replace(day=1)
-	last_month = first_day - timedelta(days=1)
-	return first_day, last_month			
+	today_but_a_month_ago = today - relativedelta(months = 1)
+	first_day_of_previous_month = date(today_but_a_month_ago.year, today_but_a_month_ago.month, 1)
+	last_day_of_the_previous_month = date(today.year, today.month, 1) - relativedelta(days = 1)
+	return first_day_of_previous_month, last_day_of_the_previous_month			
 
 
 def count_number_of_strips():
@@ -262,9 +265,14 @@ def download_engine(fcsd, lcsd): #fcsd = first comic strip date & lcsd = last co
 			
 	end = time.time()
 
-	print("Files downloaded in {:.2f} seconds!".format(end - start))
+	print("{} dilbert comics downloaded in {:.2f} seconds!".format(len(url_list), end - start))
 
-show_logo()
-show_main_menu()
-mmi = get_main_menu_item()
-handle_main_menu(mmi)
+def main():
+	show_logo()
+	show_main_menu()
+	the_main_menu_item = get_main_menu_item()
+	handle_main_menu(the_main_menu_item)
+
+
+if __name__ == '__main__':
+	main()

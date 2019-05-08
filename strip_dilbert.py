@@ -130,6 +130,7 @@ def get_minor_menu_item():
 			break
 	return minor_menu_item
 
+
 def handle_minor_menu(menu_item):
 	if menu_item == 1:
 		download_engine(FIRST_COMIC, NEWEST_COMIC)
@@ -186,7 +187,6 @@ def get_number_of_dilberts_till_now():
 	today = date.today()
 	delta = (today - FIRST_COMIC).days
 	return delta
-
 
 
 def get_comic_strip_start_date():
@@ -266,6 +266,7 @@ def download_engine(fcsd, lcsd): #fcsd = first comic strip date & lcsd = last co
 	end = time.time()
 
 	print("{} dilbert comics downloaded in {:.2f} seconds!".format(len(url_list), end - start))
+
 
 def main():
 	show_logo()

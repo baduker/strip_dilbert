@@ -8,7 +8,7 @@ A simple comic strip scraper for dilbert.com
 \__ \ |_| |  | | |_) | | (_| | | | |_) |  __/ |  | |_ 
 |___/\__|_|  |_| .__/   \__,_|_|_|_.__/ \___|_|   \__|
                | |                                    
-               |_|                 version: 0.1 | 2019
+               |_|                 version: 0.2 | 2019
 ~~~
 
 **What is strip_dilbert.py?**
@@ -45,5 +45,6 @@ So, hopefully there are going to be some opportutnies for you with this script. 
 - [x] Implement custom date range menu item (it's working but kinda slow)
 - [x] Implement all the main menu items
 - [ ] Improve the performance of the `download_engine()` method
-- [ ] Comment all the code
+- [x] Comment all the code
+- [ ] Write a proper counting method for available comic strips
 - [x] Reorder ale the methods and implement `if __name__ == '__main__':`

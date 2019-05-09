@@ -268,32 +268,32 @@ def get_comic_strip_url(start_date, end_date):
 	"""
 	Outputs the comic strip date url in the https://dilbert.com/YYYY-MM-DD format
 	"""
-  full_url = []
-  delta = end_date - start_date
-  for day in range(delta.days + 1):
-    full_url.append(BASE_URL+str(start_date + timedelta(day)))
-  return full_url
+	full_url = []
+	delta = end_date - start_date
+	for day in range(delta.days + 1):
+		full_url.append(BASE_URL+str(start_date + timedelta(day)))
+	return full_url
 
 
 def get_image_comic_url(session, response):
 	"""
 	Fetches the comic strip image source url based on the strip url
 	"""
-  soup = bs(response.text, 'lxml')
-  for div in soup.find_all('div', class_="img-comic-container"):
-    for a in div.find_all('a', class_="img-comic-link"):
-      for img in a.find_all('img', src=True):
-        return "https:" + img['src']
+	soup = bs(response.text, 'lxml')
+	for div in soup.find_all('div', class_="img-comic-container"):
+		for a in div.find_all('a', class_="img-comic-link"):
+			for img in a.find_all('img', src=True):
+				return "https:" + img['src']
 
 
 def download_dilbert(s, u):
 	"""
 	Downloads and saves the comic strip
 	"""
-  filne_name = u.split('/')[-1]
-  with open(os.path.join(COMICS_DIRECTORY, filne_name), "wb") as file:
-    response = s.get(u)
-    file.write(response.content)
+	filne_name = u.split('/')[-1]
+	with open(os.path.join(COMICS_DIRECTORY, filne_name), "wb") as file:
+		response = s.get(u)
+		file.write(response.content)
 
 
 def download_engine(fcsd, lcsd): #fcsd = first comic strip date & lcsd = last comis strip date

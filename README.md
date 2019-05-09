@@ -48,3 +48,5 @@ So, hopefully there are going to be some opportutnies for you with this script. 
 - [x] Comment all the code
 - [ ] Write a proper counting method for available comic strips
 - [x] Reorder ale the methods and implement `if __name__ == '__main__':`
+- [ ] Improve the `os.mkdir(DEFAULT_DIR_NAME)` method to accept that the folder exists already
+- [ ] Add `get random comic strip` method

@@ -1,20 +1,25 @@
 #!/usr/bin/python3.6
 
+"""
+A simple comic strip scraper for dilbert.com
+"""
+
 import os
 import subprocess
 
 import time
 import sys
-from tqdm import tqdm
 
 import colorama
 from colorama import Fore
 
+from datetime import date, timedelta
+
 import requests
 from bs4 import BeautifulSoup as bs
-
+from tqdm import tqdm
 from dateutil.relativedelta import relativedelta
-from datetime import date, timedelta
+
 
 LOGO = """
      _        _             _ _ _ _               _   
@@ -24,7 +29,7 @@ LOGO = """
 \__ \ |_| |  | | |_) | | (_| | | | |_) |  __/ |  | |_ 
 |___/\__|_|  |_| .__/   \__,_|_|_|_.__/ \___|_|   \__|
                | |                                    
-               |_|                 version: 0.1 | 2019
+               |_|                 version: 0.2 | 2019
 
 """
 
@@ -38,6 +43,9 @@ NEWEST_COMIC = date.today()
 
 
 def clear_screen():
+	"""
+	Clears terminal screen
+	"""
 	if os.name in ('nt', 'dos'):
 		subprocess.call('cls')
 	elif os.name in ('linux', 'osx', 'posix'):
@@ -47,6 +55,9 @@ def clear_screen():
 
 
 def show_logo():
+	"""
+	Displays the ascii logo
+	"""
 	clear_screen()
 	colorama.init(autoreset=True)
 	print("\nA simple comic strip scraper for dilbert.com")
@@ -55,9 +66,12 @@ def show_logo():
 
 
 def show_main_menu():
+	"""
+	Main download menu
+	"""
 	print("Choose a menu item to download:\n")
 	print("1. Today's comic strip: {}".format(get_today()))
-	print("2. This week's strips:  {} - {} | {} comic(s) available.".format(get_this_week()[0], get_this_week()[1], count_number_of_strips()))
+	print("2. This week's strips:  {} - {}".format(get_this_week()[0], get_this_week()[1]))
 	print("3. Last week's strips:  {} - {}".format(get_last_week()[0], get_last_week()[1]))
 	print("4. This month's strips: {} - {}".format(get_this_month()[0], get_this_month()[1]))
 	print("5. Last month's strips: {} - {}".format(get_last_month()[0], get_last_month()[1]))
@@ -67,6 +81,9 @@ def show_main_menu():
 
 
 def get_main_menu_item():
+	"""
+	Takes and checks the main menu selection input
+	"""
 	while True:
 		try:
 			main_menu_item = int(input("Type your selection here: "))
@@ -87,6 +104,9 @@ def get_main_menu_item():
 
 
 def handle_main_menu(menu_item):
+	"""
+	Handles the main menu and invokes the download engine
+	"""
 	if menu_item == 1:
 		download_engine(get_today(), get_today())
 	elif menu_item == 2:
@@ -112,6 +132,9 @@ def handle_main_menu(menu_item):
 	
 
 def get_minor_menu_item():
+	"""
+	Takes and checks the minor menu selection input
+	"""
 	while True:
 		try:
 			minor_menu_item = int(input("Type your selection here: "))
@@ -132,6 +155,9 @@ def get_minor_menu_item():
 
 
 def handle_minor_menu(menu_item):
+	"""
+	Handles the minor menu and invokes the custom date range download engine
+	"""
 	if menu_item == 1:
 		download_engine(FIRST_COMIC, NEWEST_COMIC)
 	elif menu_item == 2:
@@ -141,11 +167,17 @@ def handle_minor_menu(menu_item):
 
 
 def get_today():
+	"""
+	Returns today's date
+	"""
 	today = date.today()
 	return today
 
 
 def get_this_week():
+	"""
+	Returns dates for current week
+	"""
 	today = date.today()
 	week_start = today - timedelta(days = today.weekday())
 	delta = (today - week_start).days
@@ -154,6 +186,9 @@ def get_this_week():
 
 
 def get_last_week():
+	"""
+	Returns last week's date range
+	"""
 	today = date.today()
 	last_week_start = today - timedelta(days = today.weekday(), weeks = 1)
 	last_week_end = last_week_start + timedelta(days=6)
@@ -161,6 +196,9 @@ def get_last_week():
 
 
 def get_this_month():
+	"""
+	Returns dates for current month
+	"""
 	today = date.today()
 	if today.day > 25:
 		today += timedelta(7)
@@ -169,6 +207,9 @@ def get_this_month():
 
 
 def get_last_month():
+	"""
+	Returns last month's date range
+	"""
 	today = date.today()
 	today_but_a_month_ago = today - relativedelta(months = 1)
 	first_day_of_previous_month = date(today_but_a_month_ago.year, today_but_a_month_ago.month, 1)
@@ -176,20 +217,19 @@ def get_last_month():
 	return first_day_of_previous_month, last_day_of_the_previous_month			
 
 
-def count_number_of_strips():
-	today = date.today()
-	week_start = today - timedelta(days = today.weekday())
-	delta = (today - week_start).days + 1
-	return delta
-
-
 def get_number_of_dilberts_till_now():
+	"""
+	Counts all the comic strips published since April 16th, 1989
+	"""
 	today = date.today()
-	delta = (today - FIRST_COMIC).days
+	delta = (today - FIRST_COMIC).days + 1
 	return delta
 
 
 def get_comic_strip_start_date():
+	"""
+	Asks for initial comic strip date for custom date range
+	"""
 	print("Type a dilbert comic start date in YYYY/MM/DD format:")
 	while True:
 		start_year, start_month, start_day = map(int, input(">> ").split("/"))
@@ -206,6 +246,9 @@ def get_comic_strip_start_date():
 
 
 def get_comic_strip_end_date():
+	"""
+	Asks for final comic strip date for custom date range
+	"""
 	print("Type a dilbert comic end date in YYYY/MM/DD format:")
 	while True:
 		end_year, end_month, end_day = map(int, input(">> ").split("/"))
@@ -222,6 +265,9 @@ def get_comic_strip_end_date():
 
 
 def get_comic_strip_url(start_date, end_date):
+	"""
+	Outputs the comic strip date url in the https://dilbert.com/YYYY-MM-DD format
+	"""
   full_url = []
   delta = end_date - start_date
   for day in range(delta.days + 1):
@@ -230,6 +276,9 @@ def get_comic_strip_url(start_date, end_date):
 
 
 def get_image_comic_url(session, response):
+	"""
+	Fetches the comic strip image source url based on the strip url
+	"""
   soup = bs(response.text, 'lxml')
   for div in soup.find_all('div', class_="img-comic-container"):
     for a in div.find_all('a', class_="img-comic-link"):
@@ -238,6 +287,9 @@ def get_image_comic_url(session, response):
 
 
 def download_dilbert(s, u):
+	"""
+	Downloads and saves the comic strip
+	"""
   filne_name = u.split('/')[-1]
   with open(os.path.join(COMICS_DIRECTORY, filne_name), "wb") as file:
     response = s.get(u)
@@ -246,6 +298,9 @@ def download_dilbert(s, u):
 
 def download_engine(fcsd, lcsd): #fcsd = first comic strip date & lcsd = last comis strip date
 
+	"""
+	Based on the strip url, fetches the comic image source and downloads it
+	"""
 	start = time.time()
 
 	url_list = get_comic_strip_url(fcsd, lcsd)
@@ -269,6 +324,9 @@ def download_engine(fcsd, lcsd): #fcsd = first comic strip date & lcsd = last co
 
 
 def main():
+	"""
+	Encapsulates and executes all methods in the main function
+	"""
 	show_logo()
 	show_main_menu()
 	the_main_menu_item = get_main_menu_item()

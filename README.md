@@ -13,11 +13,11 @@ A simple comic strip scraper for dilbert.com
 
 **What is strip_dilbert.py?**
 
-*strip_dilbert* is a simple image scrper written in Python for the well-known [dilbert.com](https://dilbert.com) comic website.
+*strip_dilbert* is a simple image scraper written in Python for the well-known [dilbert.com](https://dilbert.com) comic website.
 
 **What does it do?**
 
-The idea is to download the dilbert comic strip(s) for any day that they've been published, starting from 16th April 1989 all the way till now.
+The idea is to download the dilbert comic strip(s) for any day that the comics have been published, starting from 16th April 1989 all the way till now.
 
 The script has a number of options, letting the user get the comics for the current week or month, for example.
 

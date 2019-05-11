@@ -31,7 +31,7 @@ LOGO = """
 \__ \ |_| |  | | |_) | | (_| | | | |_) |  __/ |  | |_ 
 |___/\__|_|  |_| .__/   \__,_|_|_|_.__/ \___|_|   \__|
                | |                                    
-               |_|                 version: 0.3 | 2019
+               |_|                 version: 0.4 | 2019
 
 """
 
@@ -73,10 +73,10 @@ def show_main_menu():
 	"""
 	print("Choose a menu item to download:\n")
 	print("1. Today's comic strip: {}".format(get_today()))
-	print("2. This week's strips:  {} - {}".format(get_this_week()[0], get_this_week()[1]))
-	print("3. Last week's strips:  {} - {}".format(get_last_week()[0], get_last_week()[1]))
-	print("4. This month's strips: {} - {}".format(get_this_month()[0], get_this_month()[1]))
-	print("5. Last month's strips: {} - {}".format(get_last_month()[0], get_last_month()[1]))
+	print("2. This week's strips:  {} - {} | {} comic(s)".format(get_this_week()[0], get_this_week()[1], count_available_comics(get_this_week()[0], get_this_week()[1])))
+	print("3. Last week's strips:  {} - {} | {} comic(s)".format(get_last_week()[0], get_last_week()[1], count_available_comics(get_last_week()[0], get_last_week()[1])))
+	print("4. This month's strips: {} - {} | {} comic(s)".format(get_this_month()[0], get_this_month()[1], count_available_comics(get_this_month()[0], get_this_month()[1])))
+	print("5. Last month's strips: {} - {} | {} comic(s)".format(get_last_month()[0], get_last_month()[1], count_available_comics(get_last_month()[0], get_last_month()[1])))
 	print("6. Random comic strip:  ????-??-??")
 	print("7. Custom date ragne:   Any date between {} - {}".format(FIRST_COMIC, NEWEST_COMIC))
 	print("-"*20)
@@ -234,6 +234,11 @@ def get_number_of_dilberts_till_now():
 	"""
 	today = date.today()
 	delta = (today - FIRST_COMIC).days + 1
+	return delta
+
+
+def count_available_comics(start_date, end_date):
+	delta = (end_date - start_date).days + 1
 	return delta
 
 

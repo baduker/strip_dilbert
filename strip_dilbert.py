@@ -6,16 +6,15 @@ A simple comic strip scraper for dilbert.com
 
 import os
 import subprocess
-
 import random
-
 import time
 import sys
-
 import colorama
 from colorama import Fore
-
 from datetime import date, timedelta
+
+# PEP-8 recommends a blank line in between
+# stdlib imports and third-party imports.
 
 import requests
 from bs4 import BeautifulSoup as bs
@@ -31,7 +30,7 @@ LOGO = """
 \__ \ |_| |  | | |_) | | (_| | | | |_) |  __/ |  | |_ 
 |___/\__|_|  |_| .__/   \__,_|_|_|_.__/ \___|_|   \__|
                | |                                    
-               |_|                 version: 0.4 | 2019
+               |_|                 version: 0.5 | 2019
 
 """
 
@@ -61,9 +60,13 @@ def show_logo():
 	Displays the ascii logo
 	"""
 	clear_screen()
+	bad_colors = ['BLACK', 'LIGHTBLACK_EX', 'RESET']
 	colorama.init(autoreset=True)
 	print("\nA simple comic strip scraper for dilbert.com")
-	print(Fore.RED + LOGO)
+	codes = vars(colorama.Fore)
+	colors = [codes[color] for color in codes if color not in bad_colors]
+	colored_logo = [random.choice(colors) + line for line in LOGO.split('\n')]
+	print('\n'.join(colored_logo))
 	print("author: baduker | repo: github.com/baduker/strip_dilbert\n")
 
 
@@ -74,9 +77,9 @@ def show_main_menu():
 	print("Choose a menu item to download:\n")
 	print("1. Today's comic strip: {}".format(get_today()))
 	print("2. This week's strips:  {} - {} | {} comic(s)".format(get_this_week()[0], get_this_week()[1], count_available_comics(get_this_week()[0], get_this_week()[1])))
-	print("3. Last week's strips:  {} - {} | {} comic(s)".format(get_last_week()[0], get_last_week()[1], count_available_comics(get_last_week()[0], get_last_week()[1])))
+	print("3. Last week's strips:  {} - {} | {} comics".format(get_last_week()[0], get_last_week()[1], count_available_comics(get_last_week()[0], get_last_week()[1])))
 	print("4. This month's strips: {} - {} | {} comic(s)".format(get_this_month()[0], get_this_month()[1], count_available_comics(get_this_month()[0], get_this_month()[1])))
-	print("5. Last month's strips: {} - {} | {} comic(s)".format(get_last_month()[0], get_last_month()[1], count_available_comics(get_last_month()[0], get_last_month()[1])))
+	print("5. Last month's strips: {} - {} | {} comics".format(get_last_month()[0], get_last_month()[1], count_available_comics(get_last_month()[0], get_last_month()[1])))
 	print("6. Random comic strip:  ????-??-??")
 	print("7. Custom date ragne:   Any date between {} - {}".format(FIRST_COMIC, NEWEST_COMIC))
 	print("-"*20)

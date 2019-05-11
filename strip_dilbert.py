@@ -7,6 +7,8 @@ A simple comic strip scraper for dilbert.com
 import os
 import subprocess
 
+import random
+
 import time
 import sys
 
@@ -29,7 +31,7 @@ LOGO = """
 \__ \ |_| |  | | |_) | | (_| | | | |_) |  __/ |  | |_ 
 |___/\__|_|  |_| .__/   \__,_|_|_|_.__/ \___|_|   \__|
                | |                                    
-               |_|                 version: 0.2 | 2019
+               |_|                 version: 0.3 | 2019
 
 """
 
@@ -75,7 +77,8 @@ def show_main_menu():
 	print("3. Last week's strips:  {} - {}".format(get_last_week()[0], get_last_week()[1]))
 	print("4. This month's strips: {} - {}".format(get_this_month()[0], get_this_month()[1]))
 	print("5. Last month's strips: {} - {}".format(get_last_month()[0], get_last_month()[1]))
-	print("6. Custom date ragne:")
+	print("6. Random comic strip:  ????-??-??")
+	print("7. Custom date ragne:   Any date between {} - {}".format(FIRST_COMIC, NEWEST_COMIC))
 	print("-"*20)
 	print("0. Type 0 to Exit.\n")
 
@@ -93,7 +96,7 @@ def get_main_menu_item():
 		if main_menu_item < 0:
 			print("\nSorry, that didn't work! Try again.\n")
 			continue
-		elif main_menu_item > 6:
+		elif main_menu_item > 7:
 			print("\nNo such menu item! Try again.\n")
 			continue
 		elif main_menu_item == 0:
@@ -118,6 +121,9 @@ def handle_main_menu(menu_item):
 	elif menu_item == 5:
 		download_engine(get_last_month()[0], get_last_month()[1])
 	elif menu_item == 6:
+		start_and_end_date = generate_random_date()
+		download_engine(start_and_end_date, start_and_end_date)
+	elif menu_item == 7:
 		clear_screen()
 		today = date.today()
 		print("\nNOTE! Since {}, there has been {} (as of {}) dilberts published.".format(FIRST_COMIC.strftime('%d/%b/%Y'), get_number_of_dilberts_till_now(), today.strftime('%d/%b/%Y')))
@@ -217,6 +223,11 @@ def get_last_month():
 	return first_day_of_previous_month, last_day_of_the_previous_month			
 
 
+def generate_random_date():
+	random_date = FIRST_COMIC + (NEWEST_COMIC - FIRST_COMIC) * random.random()
+	return random_date
+
+
 def get_number_of_dilberts_till_now():
 	"""
 	Counts all the comic strips published since April 16th, 1989
@@ -237,7 +248,7 @@ def get_comic_strip_start_date():
 		if start_date < FIRST_COMIC:
 			print("The oldest comic is from 1989/04/16. Try again.")
 			continue
-		elif start_date > date.today():
+		elif start_date > NEWEST_COMIC:
 			print("You can't download anything from the future yet. Try again.")
 			continue
 		else:
@@ -296,16 +307,15 @@ def download_dilbert(s, u):
 		file.write(response.content)
 
 
-def download_engine(fcsd, lcsd): #fcsd = first comic strip date & lcsd = last comis strip date
-
+def download_engine(first_comic_strip_date, last_comic_strip_date):
 	"""
 	Based on the strip url, fetches the comic image source and downloads it
 	"""
 	start = time.time()
 
-	url_list = get_comic_strip_url(fcsd, lcsd)
+	url_list = get_comic_strip_url(first_comic_strip_date, last_comic_strip_date)
 
-	os.mkdir(DEFAULT_DIR_NAME)
+	os.makedirs(DEFAULT_DIR_NAME, exist_ok = True)
 
 	for url in url_list:
 		session = requests.Session()
@@ -327,6 +337,7 @@ def main():
 	"""
 	Encapsulates and executes all methods in the main function
 	"""
+	random_comic_strip = generate_random_date()
 	show_logo()
 	show_main_menu()
 	the_main_menu_item = get_main_menu_item()

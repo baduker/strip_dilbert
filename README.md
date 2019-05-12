@@ -50,3 +50,5 @@ So, hopefully there are going to be some opportutnies for you with this script. 
 - [x] Improve the `os.mkdir(DEFAULT_DIR_NAME)` method to accept that the folder exists already
 - [x] Add `get random comic strip` method
 - [x] Improve the performance of the `download_engine()` method to get all the dilberts
+- [ ] Implement a list of source URL's with the date/name of the comic and find a way to store it
+- [ ] Improve / change the progress bar

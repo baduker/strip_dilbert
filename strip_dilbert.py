@@ -9,6 +9,7 @@ import subprocess
 import random
 import time
 import sys
+import threading
 import colorama
 from colorama import Fore
 from datetime import date, timedelta
@@ -30,7 +31,7 @@ LOGO = """
 \__ \ |_| |  | | |_) | | (_| | | | |_) |  __/ |  | |_ 
 |___/\__|_|  |_| .__/   \__,_|_|_|_.__/ \___|_|   \__|
                | |                                    
-               |_|                 version: 0.5 | 2019
+               |_|                 version: 0.6 | 2019
 
 """
 
@@ -294,7 +295,7 @@ def get_comic_strip_url(start_date, end_date):
 	return full_url
 
 
-def get_image_comic_url(session, response):
+def get_image_comic_url(response):
 	"""
 	Fetches the comic strip image source url based on the strip url
 	"""
@@ -305,13 +306,13 @@ def get_image_comic_url(session, response):
 				return "https:" + img['src']
 
 
-def download_dilbert(s, u):
+def download_dilbert(u):
 	"""
 	Downloads and saves the comic strip
 	"""
 	filne_name = u.split('/')[-1]
 	with open(os.path.join(COMICS_DIRECTORY, filne_name), "wb") as file:
-		response = s.get(u)
+		response = requests.get(u)
 		file.write(response.content)
 
 
@@ -326,16 +327,17 @@ def download_engine(first_comic_strip_date, last_comic_strip_date):
 	os.makedirs(DEFAULT_DIR_NAME, exist_ok = True)
 
 	for url in url_list:
-		session = requests.Session()
-		response = session.get(url)
-		download_url = get_image_comic_url(session, response)
+		#session = requests.Session()
+		response = requests.get(url)
+		download_url = get_image_comic_url(response)
 
 		pbar = tqdm(range(len(url_list)))
 
 		for i in pbar:
 			pbar.set_description("Fetching {}".format(url[8:]))
-			download_dilbert(session, download_url)
-			
+			thread = threading.Thread(target=download_dilbert, args=(download_url,))
+			thread.start()
+		thread.join()
 	end = time.time()
 
 	print("{} dilbert comics downloaded in {:.2f} seconds!".format(len(url_list), end - start))

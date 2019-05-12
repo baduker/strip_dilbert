@@ -8,7 +8,7 @@ A simple comic strip scraper for dilbert.com
 \__ \ |_| |  | | |_) | | (_| | | | |_) |  __/ |  | |_ 
 |___/\__|_|  |_| .__/   \__,_|_|_|_.__/ \___|_|   \__|
                | |                                    
-               |_|                 version: 0.5 | 2019
+               |_|                 version: 0.6 | 2019
 ~~~
 
 **What is strip_dilbert.py?**
@@ -49,4 +49,4 @@ So, hopefully there are going to be some opportutnies for you with this script. 
 - [x] Reorder ale the methods and implement `if __name__ == '__main__':`
 - [x] Improve the `os.mkdir(DEFAULT_DIR_NAME)` method to accept that the folder exists already
 - [x] Add `get random comic strip` method
-- [ ] Improve the performance of the `download_engine()` method to get all the dilberts
+- [x] Improve the performance of the `download_engine()` method to get all the dilberts

@@ -75,27 +75,60 @@ def show_main_menu():
     """
     Main download menu
     """
+    today = get_today()
+    this_week_start = get_this_week()[0]
+    this_week_end = get_this_week()[1]
+    number_of_comics_this_week = count_available_comics(
+        this_week_start,
+        this_week_end)
+    last_week_start = get_last_week()[0]
+    last_week_end = get_last_week()[1]
+    number_of_comics_this_last_week = count_available_comics(
+        last_week_start,
+        last_week_end)
+    this_month_start = get_this_month()[0]
+    this_month_end = get_this_month()[1]
+    number_of_comics_this_month = count_available_comics(
+        this_month_start,
+        this_month_end)
+    last_month_start = get_last_month()[0]
+    last_month_end = get_last_month()[1]
+    number_of_comics_last_month = count_available_comics(
+        last_month_start,
+        last_month_end)
+
     print("Choose a menu item to download:\n")
-    print("1. Today's comic strip: {}".format(get_today()))
-    print("2. This week's strips:  {} - {} | {} comic(s)".format(
-        get_this_week()[0], get_this_week()[1],
-        count_available_comics(get_this_week()[0], get_this_week()[1])))
+    print("1. Today's comic strip: {today}".format(today=today))
 
-    print("3. Last week's strips:  {} - {} | {} comics".format(
-        get_last_week()[0], get_last_week()[1],
-        count_available_comics(get_last_week()[0], get_last_week()[1])))
+    print("2. This week's strips:  {this_week_start} - {this_week_end} "
+        "| {number_of_comics_this_week} comic(s)".format(
+        this_week_start=this_week_start,
+        this_week_end=this_week_end,
+        number_of_comics_this_week=number_of_comics_this_week))
 
-    print("4. This month's strips: {} - {} | {} comic(s)".format(
-        get_this_month()[0], get_this_month()[1],
-        count_available_comics(get_this_month()[0], get_this_month()[1])))
+    print("3. Last week's strips:  {last_week_start} - {last_week_end} "
+        "| {number_of_comics_this_last_week} comics".format(
+        last_week_start=last_week_start,
+        last_week_end=last_week_end,
+        number_of_comics_this_last_week=number_of_comics_this_last_week))
 
-    print("5. Last month's strips: {} - {} | {} comics".format(
-        get_last_month()[0], get_last_month()[1],
-        count_available_comics(get_last_month()[0], get_last_month()[1])))
+    print("4. This month's strips: {this_month_start} - {this_month_end} "
+        "| {number_of_comics_this_month} comic(s)".format(
+        this_month_start=this_month_start,
+        this_month_end=this_month_end,
+        number_of_comics_this_month=number_of_comics_this_month))
+
+    print("5. Last month's strips: {last_month_start} - {last_month_end} "
+        "| {number_of_comics_last_month} comics".format(
+        last_month_start=last_month_start,
+        last_month_end=last_month_end,
+        number_of_comics_last_month=number_of_comics_last_month))
 
     print("6. Random comic strip:  ????-??-??")
-    print("7. Custom date ragne:   Any date between {} - {}".format(
-        FIRST_COMIC, NEWEST_COMIC))
+    print("7. Custom date ragne:   Any date between {FIRST_COMIC} - "
+        "{NEWEST_COMIC}".format(
+        FIRST_COMIC=FIRST_COMIC,
+        NEWEST_COMIC=NEWEST_COMIC))
     print("-"*20)
     print("0. Type 0 to Exit.\n")
 
@@ -127,6 +160,9 @@ def handle_main_menu(menu_item):
     """
     Handles the main menu and invokes the download engine
     """
+    today = get_today()
+    number_of_all_dilberts = get_number_of_dilberts_till_now()
+
     if menu_item == 1:
         download_engine(get_today(), get_today())
     elif menu_item == 2:
@@ -143,14 +179,16 @@ def handle_main_menu(menu_item):
     elif menu_item == 7:
         clear_screen()
         today = date.today()
-        print("\nNOTE! Since {}, there has been {} (as of {}) dilberts "
-            "published.".format(FIRST_COMIC.strftime('%d/%b/%Y'),
-        get_number_of_dilberts_till_now(),
-        today.strftime('%d/%b/%Y')))
+        print("\nNOTE! Since {FIRST_COMIC}, there has been "
+            "{number_of_all_dilberts} (as of {today}) dilberts "
+        "published.".format(
+        FIRST_COMIC=FIRST_COMIC.strftime('%d/%b/%Y'),
+        number_of_all_dilberts=number_of_all_dilberts,
+        today=today.strftime('%d/%b/%Y')))
         print("So, if you want to download all of them bear in mind that "
             "it might take a while.\n")
-        print("1. Downlaod all dilberts ({})!".format(
-            get_number_of_dilberts_till_now()))
+        print("1. Downlaod all dilberts ({number_of_all_dilberts})!".format(
+            number_of_all_dilberts=number_of_all_dilberts))
         print("2. Enter a custom date range.")
         print("-"*20)
         print("0. Type 0 to Exit.\n")
@@ -357,14 +395,14 @@ def download_engine(first_comic_strip_date, last_comic_strip_date):
         pbar = tqdm(range(len(url_list)))
 
         for i in pbar:
-            pbar.set_description("Fetching {}".format(url[8:]))
+            pbar.set_description("Fetching {url}".format(url=url[8:]))
             thread = threading.Thread(
                 target=download_dilbert, args=(download_url,))
             thread.start()
         thread.join()
     end = time.time()
 
-    print("{} dilbert comics downloaded in {:.2f} seconds!".format(
+    print("{url_list} dilbert comics downloaded in {:.2f} seconds!".format(
         len(url_list), end - start))
 
 

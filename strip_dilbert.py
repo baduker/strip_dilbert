@@ -31,7 +31,7 @@ LOGO = """
 \__ \ |_| |  | | |_) | | (_| | | | |_) |  __/ |  | |_ 
 |___/\__|_|  |_| .__/   \__,_|_|_|_.__/ \___|_|   \__|
                | |                                    
-               |_|                 version: 0.6 | 2019
+               |_|                 version: 0.7 | 2019
 
 """
 
@@ -54,6 +54,29 @@ def clear_screen():
         subprocess.call('clear')
     else:
         print("\n" * 120)
+
+
+def print_progress(iteration, total, prefix='', suffix='', decimals=1, bar_length=100):
+    """
+    Call in a loop to create terminal progress bar
+    @params:
+        iteration   - Required  : current iteration (Int)
+        total       - Required  : total iterations (Int)
+        prefix      - Optional  : prefix string (Str)
+        suffix      - Optional  : suffix string (Str)
+        decimals    - Optional  : positive number of decimals in percent complete (Int)
+        bar_length  - Optional  : character length of bar (Int)
+    """
+    str_format = "{0:." + str(decimals) + "f}"
+    percents = str_format.format(100 * (iteration / float(total)))
+    filled_length = int(round(bar_length * iteration / float(total)))
+    bar = '#' * filled_length + '-' * (bar_length - filled_length)
+
+    sys.stdout.write('\r%s |%s| %s%s %s' % (prefix, bar, percents, '%', suffix)),
+
+    if iteration == total:
+        sys.stdout.write('\n')
+    sys.stdout.flush()
 
 
 def show_logo():
@@ -267,6 +290,8 @@ def get_this_month():
     """
     today = date.today()
     if today.day > 25:
+        today += timedelta(1)
+    else:
         today += timedelta(7)
     first_day_of_this_month = today.replace(day=1)
     return first_day_of_this_month, today
@@ -388,22 +413,22 @@ def download_engine(first_comic_strip_date, last_comic_strip_date):
 
     os.makedirs(DEFAULT_DIR_NAME, exist_ok=True)
 
+    counter = 1
     for url in url_list:
+        print_progress(counter, len(url_list), prefix="Fetching: " + url[8:],
+            suffix='', bar_length=30)
         response = requests.get(url)
         download_url = get_image_comic_url(response)
 
-        pbar = tqdm(range(len(url_list)))
-
-        for i in pbar:
-            pbar.set_description("Fetching {url}".format(url=url[8:]))
-            thread = threading.Thread(
-                target=download_dilbert, args=(download_url,))
-            thread.start()
+        thread = threading.Thread(
+            target=download_dilbert, args=(download_url,))
+        thread.start()
         thread.join()
+        counter += 1
+
     end = time.time()
 
-    print("{url_list} dilbert comics downloaded in {:.2f} seconds!".format(
-        len(url_list), end - start))
+    print("{} dilbert comics downloaded in {:.2f} seconds!".format(counter - 1, end - start))
 
 
 def main():

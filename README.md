@@ -8,7 +8,7 @@ A simple comic strip scraper for dilbert.com
 \__ \ |_| |  | | |_) | | (_| | | | |_) |  __/ |  | |_ 
 |___/\__|_|  |_| .__/   \__,_|_|_|_.__/ \___|_|   \__|
                | |                                    
-               |_|                 version: 0.6 | 2019
+               |_|                 version: 0.7 | 2019
 ~~~
 
 **What is strip_dilbert.py?**
@@ -51,4 +51,4 @@ So, hopefully there are going to be some opportutnies for you with this script. 
 - [x] Add `get random comic strip` method
 - [x] Improve the performance of the `download_engine()` method to get all the dilberts
 - [ ] Implement a list of source URL's with the date/name of the comic and find a way to store it
-- [ ] Improve / change the progress bar
+- [x] Improve / change the progress bar

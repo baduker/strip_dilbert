@@ -31,7 +31,7 @@ LOGO = """
 \__ \ |_| |  | | |_) | | (_| | | | |_) |  __/ |  | |_ 
 |___/\__|_|  |_| .__/   \__,_|_|_|_.__/ \___|_|   \__|
                | |                                    
-               |_|                 version: 0.7 | 2019
+               |_|                 version: 0.8 | 2019
 
 """
 
@@ -56,27 +56,34 @@ def clear_screen():
         print("\n" * 120)
 
 
-def print_progress(iteration, total, prefix='', suffix='', decimals=1, bar_length=100):
+def print_progress(iteration, total, prefix='',
+    suffix='', decimals=1, bar_length=100):
     """
     Call in a loop to create terminal progress bar
     @params:
-        iteration   - Required  : current iteration (Int)
-        total       - Required  : total iterations (Int)
-        prefix      - Optional  : prefix string (Str)
-        suffix      - Optional  : suffix string (Str)
-        decimals    - Optional  : positive number of decimals in percent complete (Int)
-        bar_length  - Optional  : character length of bar (Int)
+    iteration   - Required  : current iteration (Int)
+    total       - Required  : total iterations (Int)
+    prefix      - Optional  : prefix string (Str)
+    suffix      - Optional  : suffix string (Str)
+    decimals    - Optional  : positive number of decimals in % complete (Int)
+    bar_length  - Optional  : character length of bar (Int)
     """
     str_format = "{0:." + str(decimals) + "f}"
     percents = str_format.format(100 * (iteration / float(total)))
     filled_length = int(round(bar_length * iteration / float(total)))
     bar = '#' * filled_length + '-' * (bar_length - filled_length)
 
-    sys.stdout.write('\r%s |%s| %s%s %s' % (prefix, bar, percents, '%', suffix)),
+    sys.stdout.write('\r%s |%s| %s%s %s' %
+        (prefix, bar, percents, '%', suffix)),
 
     if iteration == total:
         sys.stdout.write('\n')
     sys.stdout.flush()
+
+def human_readable_time(seconds):
+    minutes, seconds = divmod(seconds, 60)
+    hours, minutes = divmod(minutes, 60)
+    return "{:02d}:{:02d}:{:02d}".format(hours, minutes, seconds)
 
 
 def show_logo():
@@ -125,9 +132,9 @@ def show_main_menu():
 
     print("2. This week's strips:  {this_week_start} - {this_week_end} "
         "| {number_of_comics_this_week} comic(s)".format(
-        this_week_start=this_week_start,
-        this_week_end=this_week_end,
-        number_of_comics_this_week=number_of_comics_this_week))
+            this_week_start=this_week_start,
+            this_week_end=this_week_end,
+            number_of_comics_this_week=number_of_comics_this_week))
 
     print("3. Last week's strips:  {last_week_start} - {last_week_end} "
         "| {number_of_comics_this_last_week} comics".format(
@@ -290,7 +297,7 @@ def get_this_month():
     """
     today = date.today()
     if today.day > 25:
-        today += timedelta(1)
+        today = date.today()
     else:
         today += timedelta(7)
     first_day_of_this_month = today.replace(day=1)
@@ -428,7 +435,11 @@ def download_engine(first_comic_strip_date, last_comic_strip_date):
 
     end = time.time()
 
-    print("{} dilbert comics downloaded in {:.2f} seconds!".format(counter - 1, end - start))
+    total_seconds_elapsed = end - start
+
+    print("{} dilbert comics downloaded in {human_readable_time} seconds!".
+        format(counter - 1,
+        human_readable_time=human_readable_time(int(total_seconds_elapsed))))
 
 
 def main():

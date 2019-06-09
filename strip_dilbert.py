@@ -296,10 +296,6 @@ def get_this_month():
     Returns dates for current month
     """
     today = date.today()
-    if today.day > 25:
-        today = date.today()
-    else:
-        today += timedelta(7)
     first_day_of_this_month = today.replace(day=1)
     return first_day_of_this_month, today
 

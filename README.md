@@ -8,7 +8,7 @@ A simple comic strip scraper for dilbert.com
 \__ \ |_| |  | | |_) | | (_| | | | |_) |  __/ |  | |_ 
 |___/\__|_|  |_| .__/   \__,_|_|_|_.__/ \___|_|   \__|
                | |                                    
-               |_|                 version: 0.8 | 2019
+               |_|                        version: 0.9
 ~~~
 
 **What is strip_dilbert.py?**
@@ -32,7 +32,7 @@ The script has a number of options, letting the user get the comics for the curr
 5. **Last month's strips:** *Downloads all the comics for the previous month* 
 6. **Custom date range:** *Let's the user set the download date range (16/Apr/1989 - NOW)* 
 
-So, hopefully there are going to be some opportutnies for you with this script. ;)
+So, hopefully there are going to be some opportunities for you with this script. ;)
 
 [![opportunity.png](https://assets.amuniversal.com/505f94006cbc01301d46001dd8b71c47)](https://dilbert.com/strip/2009-09-24)
 

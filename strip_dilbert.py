@@ -13,9 +13,6 @@ import threading
 import colorama
 from datetime import date, timedelta
 
-# PEP-8 recommends a blank line in between
-# stdlib imports and third-party imports.
-
 import requests
 from bs4 import BeautifulSoup as bs
 from dateutil.relativedelta import relativedelta
@@ -42,12 +39,7 @@ def clear_screen():
     """
     Clears terminal screen
     """
-    if os.name in ('nt', 'dos'):
-        subprocess.call('cls')
-    elif os.name in ('linux', 'osx', 'posix'):
-        subprocess.call('clear')
-    else:
-        print("\n" * 120)
+    os.system("cls" if os.name == "nt" else "clear")
 
 
 def print_progress(
@@ -79,7 +71,7 @@ def print_progress(
 def human_readable_time(seconds):
     minutes, seconds = divmod(seconds, 60)
     hours, minutes = divmod(minutes, 60)
-    return "{:02d}:{:02d}:{:02d}".format(hours, minutes, seconds)
+    return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
 
 def show_logo():
@@ -231,9 +223,9 @@ def get_last_month():
     Returns last month's date range
     """
     today = date.today()
-    today_but_a_month_ago = today - relativedelta(months=1)
+    today_month_ago = today - relativedelta(months=1)
     first_day_of_previous_month = date(
-        today_but_a_month_ago.year, today_but_a_month_ago.month, 1)
+        today_month_ago.year, today_month_ago.month, 1)
     last_day_of_the_previous_month = date(
         today.year, today.month, 1) - relativedelta(days=1)
     return first_day_of_previous_month, last_day_of_the_previous_month
@@ -312,7 +304,7 @@ def download_dilbert(url):
     """
     Downloads and saves the comic strip
     """
-    filne_name = url.split('/')[-1] + ".jpeg"
+    filne_name = url.split('/')[-1]
     with open(os.path.join(COMICS_DIRECTORY, filne_name), "wb") as file:
         response = requests.get(url)
         file.write(response.content)
